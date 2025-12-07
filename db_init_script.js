@@ -2,7 +2,7 @@ const sqlite3 = require('sqlite3').verbose();
 const bcrypt = require('bcrypt');
 const arrayUtils = require('./src/utils/arrayUtils');
 const saltRounds = 10;
-let db = new sqlite3.Database('./2024.db', (err) => {
+let db = new sqlite3.Database('./2025.db', (err) => {
     if (err) {
         console.error(err.message);
     }
@@ -234,7 +234,7 @@ const deleteEventPairings = (eventId) => {
         });
     });
 };
-/*
+
 createEventsTable()
   .then((message) => {console.log(message); return createEventUsersTable(); })
   .then((message) => {console.log(message); return createEventPairingsTable();})
@@ -269,7 +269,7 @@ createEventsTable()
     console.log(result);
     })
   .then((message) => {
-    return insertEvent("Amic Invisible Tió 2023", new Date().getMilliseconds());
+    return insertEvent("Amic Invisible Tió 2025", new Date().getTime());
   })
   .then(async (message) => {
     console.log(message);
@@ -287,16 +287,22 @@ createEventsTable()
     const event = await getEvent(1);
     const users = await getAllUsers();
   
-    arrayUtils.shuffleArray(users);  
+    // Eliminar aparellaments existents per aquest esdeveniment
+    await deleteEventPairings(event.id);
+    console.log("Aparellaments anteriors eliminats");
   
-    for(let i=0; i < users.length - 1; i++) {
-      console.log(await insertEventPairing(users[i], users[i + 1], event));
+    // Barrejar usuaris per crear aparellaments aleatoris
+    const shuffledUsers = arrayUtils.shuffleArrayCopy(users);  
+    console.log("Usuaris barrejats:", shuffledUsers.map(u => u.username));
+  
+    for(let i=0; i < shuffledUsers.length - 1; i++) {
+        console.log("Aparellant:", shuffledUsers[i].username, "->", shuffledUsers[i + 1].username);
+      console.log(await insertEventPairing(shuffledUsers[i], shuffledUsers[i + 1], event));
     }
-    console.log(await insertEventPairing(users[users.length - 1], users[0], event));
+    console.log(await insertEventPairing(shuffledUsers[shuffledUsers.length - 1], shuffledUsers[0], event));
     
-    return "Usuaris aparellats!";
+    return "Usuaris aparellats amb nous parells aleatoris!";
   })
   .then((message) => console.log(message))
   .catch((err) => console.error(err.message))
   .finally(() => db.close());
-*/

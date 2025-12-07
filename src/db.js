@@ -2,7 +2,7 @@ const sqlite3 = require('sqlite3').verbose();
 const path = require("path");
 
 // Obrir la base de dades SQLite
-let db = new sqlite3.Database('2024.db', sqlite3.OPEN_READONLY, (err) => {
+let db = new sqlite3.Database('2025.db', sqlite3.OPEN_READONLY, (err) => {
     if (err) {
         console.error(err.message, path.join(__dirname, 'database.db'));
     }
