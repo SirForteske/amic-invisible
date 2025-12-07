@@ -2,7 +2,7 @@ const sqlite3 = require('sqlite3').verbose();
 const bcrypt = require('bcrypt');
 const arrayUtils = require('./src/utils/arrayUtils');
 const saltRounds = 10;
-let db = new sqlite3.Database('./2024.db', (err) => {
+let db = new sqlite3.Database('./2025.db', (err) => {
     if (err) {
         console.error(err.message);
     }
@@ -234,7 +234,7 @@ const deleteEventPairings = (eventId) => {
         });
     });
 };
-/*
+
 createEventsTable()
   .then((message) => {console.log(message); return createEventUsersTable(); })
   .then((message) => {console.log(message); return createEventPairingsTable();})
@@ -299,4 +299,3 @@ createEventsTable()
   .then((message) => console.log(message))
   .catch((err) => console.error(err.message))
   .finally(() => db.close());
-*/
